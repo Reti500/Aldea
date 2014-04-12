@@ -1,6 +1,8 @@
 Aldea::Application.routes.draw do
   
   resources :codigos
+
+  root 'codigos#index'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
