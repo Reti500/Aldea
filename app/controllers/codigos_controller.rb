@@ -11,18 +11,34 @@ class CodigosController < ApplicationController
   def create
   	@tipo = params[:tipo]
 
-  	@codigo = Codigo.new(codigos_params)
-  	@codigo.tipo = Tipo.find_or_create_by(tipo: @tipo)
-  	
-  	if @codigo.save
-  		render json: @codigo
+  	@auxTipo = Tipo.find_by(tipo: @tipo)
+
+  	if @auxTipo
+  		@auxCodigo = Codigo.find_by(codigo: params[:codigo][:codigo], tipo_id: @auxTipo.id)
+
+  		if @auxCodigo
+  			render json: { error: "Ya existe!" }
+  		else
+  			guardar
+  		end
   	else
-  		render json: @codigo.errors
+  		guardar
   	end
   end
 
   private
   def codigos_params
   	params.require(:codigo).permit(:codigo)
+  end
+
+  def guardar
+  	@codigo = Codigo.new(codigos_params)
+		@codigo.tipo = Tipo.find_or_create_by(tipo: @tipo)
+
+		if @codigo.save
+  		render json: @codigo
+  	else
+  		render json: @codigo.errors
+  	end
   end
 end
