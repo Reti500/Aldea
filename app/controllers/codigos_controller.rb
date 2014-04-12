@@ -13,9 +13,12 @@ class CodigosController < ApplicationController
 
   	@codigo = Codigo.new(codigos_params)
   	@codigo.tipo = Tipo.find_or_create_by(tipo: @tipo)
-  	@codigo.save
-
-  	render json: @codigo
+  	
+  	if @codigo.save
+  		render json: @codigo
+  	else
+  		render json: @codigo.errors
+  	end
   end
 
   private
