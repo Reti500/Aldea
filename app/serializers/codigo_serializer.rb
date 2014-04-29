@@ -1,5 +1,5 @@
 class CodigoSerializer < ActiveModel::Serializer
-  attributes :id, :codigo, :tipo
+  attributes :id, :codigo, :tipo, :fecha, :hora
 
   def tipo
   	if object.tipo
